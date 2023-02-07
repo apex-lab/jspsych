@@ -1,5 +1,5 @@
 /********************************/
-/***** Visual N-Back Task *****/
+/***** Auditory N-Back Task *****/
 /********************************/
 
 /*
@@ -8,29 +8,30 @@ The n -back task is a continuous performance task that is commonly used
 as an assessment in psychology and cognitive neuroscience to measure
 a part of working memory and working memory capacity. 
 The n -back was introduced by Wayne Kirchner in 1958. Participants must
-monitor a continuous stream of stimuli (here, visual stimuli) and 
+monitor a continuous stream of stimuli (here, auditory stimuli) and 
 respond based on whether the current stimulus matches the one presented
 'n' stimuli previously.
 
-In this part of the script, participants complete several runs of an visual n-back 
+In this part of the script, participants complete several runs of an auditory n-back 
 task. Participants complete one run (30 scored trials) of the 1-back, and 2 runs 
-of both the 2-back and 3-back for each image type. These variables are easy to
+of both the 2-back and 3-back for each sound type. These variables are easy to
 change (e.g., presenting a higher n, removing runs etc.)
 
-The visual stimuli are easily customizable. At present, you can 
-select from visual letters and spatial locations. Just change the
-'imageType' variable.
+The auditory stimuli are easily customizable. At present, you can 
+select from spoken letters, cat vocalizations, novel musical chords 
+(using the Bohlen-Pierce scale), and musical tones. Just change the
+'soundType' variable.
 
 In the main index.html script, you should reference two things:
 
 1. You must push 'nback' to the timeline [i.e., timeline.push(nback);] when you want the task to run
 
-2. Use the 'return_nback_folder' function to name your own folder for the image files (for preloading).
-This is optional -- if you do not do this, you should specify that 'anb_imagess' is the variable to be
-preloaded for images.
+2. Use the 'return_nback_folder' function to name your own folder for the audio files (for preloading).
+This is optional -- if you do not do this, you should specify that 'anb_sounds' is the variable to be
+preloaded for audio
 
 
-// Stephen Van Hedger, April 2020 & Shannon Heald, Lauren Kingsly 2023 //
+// Stephen Van Hedger, April 2020 //
 
 
 */	
@@ -57,31 +58,19 @@ var FA_1 = 0; //counter of total false alarms for 1-back
 var FA_2 = 0; //counter of total false alarms for 2-back
 var FA_3 = 0; //counter of total false alarms for 3-back
 
-/*What images do you want to use? options: 
+/*What sounds do you want to use? options: 
 'letters' 
-'spatial'  
+'cat sounds' 
+'chords' 
+'tones'	  
 */	 
-var imageType = 'spatial'; //change this line to use different images
-
-var anb_images = []; //the ultimate array that will hold the images
-var baseName = ['B.jpg', 'C.jpg', 'D.jpg', 'F.jpg', 'H.jpg', 'K.jpg', 'N.jpg', 'Q.jpg'];
-
-for (var i=0; i<baseName.length; i++){
-	if (imageType == 'letters'){
-		var nbstim = 'letters/'+baseName[i];
-		anb_images.push(nbstim);
-	} else {
-		var nbstim = 'spatial/'+baseName[i];
-		anb_images.push(nbstim);	
-	}	
-}	
-
-
+var imgType = 'spatial'; //change this line to use different sounds
+var nb_images = [`spatial/B.jpg`, `spatial/C.jpg`, `spatial/D.jpg`, `spatial/F.jpg`, `spatial/H.jpg`, `spatial/K.jpg`, `spatial/N.jpg`, `spatial/Q.jpg`]; //the ultimate array that will hold the sounds
 var n;  
 
-//function to return the image files (for preloading in the main script) 
+//function to return the audio files (for preloading in the main script) 
 function return_nback_folder(){
-	return anb_images;
+	return nb_images;
 };
  
 /* Returns one random stimulus with replacement*/
@@ -96,12 +85,12 @@ function return_nback_folder(){
 
 	  var instrBack = {
 			type: "html-button-response",
-			stimulus: function(){n = NB_SEQUENCE[NB_INDEX]; return'<p>You will now complete a <strong>'+n+'-back.</strong></p><p>Remember, this means that you should press SPACEBAR every time the image you see matches the one presented <strong>'+n+'</strong> position(s) previously.</p>';},
+			stimulus: function(){n = NB_SEQUENCE[NB_INDEX]; return'<p>You will now complete a <strong>'+n+'-back.</strong></p><p>Remember, this means that you should press SPACEBAR every time the sound you hear matches the one presented <strong>'+n+'</strong> position(s) previously.</p>';},
 		    choices: ['Continue'],
 			on_start: function(){
 				n = NB_SEQUENCE[NB_INDEX]; //this selects the level (n) from the array defined at the beginning
 				TRIAL_INDEX = 0; //trial index is reset prior to each run
-				var imageStimuli = []; //this is the array that will hold the sequence of images
+				var imgStimuli = []; //this is the array that will hold the sequence of sounds
 				//now we push three trial types to an array (finalArray) - first n trials (FIRSTS), non-targets (NT) and targets (T)
 				var FIRSTS = ["FIRSTS"];
 				var NT = ["NT"];
@@ -122,42 +111,49 @@ function return_nback_folder(){
 					finalArray.push(TESTTRIALS_SHUFFLED[i]) //push randomized target/non-target (i.e., the scored trials) to the array after the first trials)
 				};
 		
-				var imageTarget;
-				var imageSample;
-				  
+				var imgTarget;
+				var imgSample;
+				var target_temp = [];
+  
 				for (var i = 0; i < finalArray.length; i++) {  
 					if (finalArray[i] == "FIRSTS") {
-						imageStimuli.push;
+						imgStimuli.push(getSample(nb_images));
 					} else {
-						imageTarget = imageStimuli[i-n];
-						imageSample = imageTarget;
-		   // if the trial type is NT, the script removes the target stim from the array, selects a image, then puts the target back into the array
-		  		 if (finalArray[i] == "NT") {	
-					for( var j = 0; j < anb_images.length; j++){ 
-						if (anb_images[j] == imageTarget) {
-							target_temp = anb_images.slice(j, j+1); //temporary store for the target
-							anb_images.splice(j, 1); //array of images minus the target
+						imgTarget = imgStimuli[i-n];
+						imgSample = imgTarget;
+			
+		   // if the trial type is NT, the script removes the target stim from the array, selects a sound, then puts the target back into the array
+				if (finalArray[i] == "NT") {	
+					for( var j = 0; j < nb_images.length; j++){ 
+						if (nb_images[j] == imgTarget) {
+							
+							target_temp = nb_images.slice(j, j+1); //temporary store for the target
+							nb_images.splice(j, 1); //array of sounds minus the target
 							}
-						imageSample = getSample(anb_images);	
+						imgSample = getSample(nb_images);	
 						}		
-					anb_images.push(target_temp[0]);
+					nb_images.push(target_temp[0]);
+					target_temp = [];
 					}
+				imgStimuli.push(imgSample);
 				}
 			}
-			run_sequence = {image: imageStimuli, type: finalArray};
+			run_sequence = {image: imgStimuli, type: finalArray};
 		}		
     };
 		
      
 ///////////////////////////////
-// image Presentation Trial //
+// Letter Presentation Trial //
 ///////////////////////////////
    
 	var nb_trial = {
 		type: "image-keyboard-response",
 		stimulus: function(){return run_sequence.image[TRIAL_INDEX];},
         trial_duration: presentationRate,
+		stimulus_height: 500,
         choices: [' '],  
+		post_trial_gap: 100,
         response_ends_trial: false,
         on_finish: function (trialData) {
             var rt = JSON.parse(trialData.rt);
@@ -165,7 +161,7 @@ function return_nback_folder(){
 			var wasatarget = (run_sequence.type[TRIAL_INDEX] == "T") ? 1 : 0;
 			var ttype = run_sequence.type[TRIAL_INDEX];
 			var n_level = n;
-            var rtImage = rt;
+            var rtAudio = rt;
 			var HIT;
 			var FA;
 			TRIAL_INDEX += 1; 
@@ -204,9 +200,9 @@ function return_nback_folder(){
 			 }
 			  
               var extraData = {
-                rt_image: rtImage,
+                rt_audio: rtAudio,
 				designation: 'n-back-trial',
-                responded_to_image: (rtImage == null ? 0 : 1),
+                responded_to_audio: (rtAudio == null ? 0 : 1),
 				N: n_level,
 				TYPE: ttype,
 				HIT: HIT,
@@ -258,79 +254,70 @@ function return_nback_folder(){
 /** N-Back Instructions **/	  
 /*************************/	  
 
-//Dynamic instructions based on imageType
+//Dynamic instructions based on soundType
 
-if(imageType == 'letters'){
-	var nonLetterClarify = "<p></p>";
-	} else {
-	var nonLetterClarify = "<p><em>Note: The instructions use letters for illustration purposes only. Remember, you will be seeing "+imageType+" images, not letters.</em></p>";
-	};
-	
 var anb_inst_1 = {
-        type: "html-button-response",
-        stimulus: '<p>You will now complete an visual memory task. This will take approximately 15 minutes.</p><p>To learn more about the task, please advance to the next screen.',
-		choices: ['Continue'],
-		post_trial_gap: 250
-    };
+	type: "html-button-response",
+	stimulus: '<p>You will now complete an visual memory task. This will take approximately 15 minutes.</p><p>To learn more about the task, please advance to the next screen.',
+	choices: ['Continue'],
+	post_trial_gap: 250
+};
 
 var anb_inst_2 = {
-        type: "html-button-response",
-        stimulus: '<p>In this task, you will see a sequence of '+imageType+' images. The '+imageType+' images will be presented one at a time, and a new image will shown every '+Math.round(presentationRate)/1000+' seconds.' +
-				  '<p>Your job is to closely watch these images for specific kinds of <b>repeats</b>.</p>',
-		choices: ['Continue'],
-		post_trial_gap: 250
-    };
+	type: "html-button-response",
+	stimulus: '<p>In this task, you will see a sequence of images. The images will be presented one at a time, and a new image will shown every '+Math.round(presentationRate)/1000+' seconds.' +
+			  '<p>Your job is to closely watch these images for specific kinds of <b>repeats</b>.</p>',
+	choices: ['Continue'],
+	post_trial_gap: 250
+};
 
 var anb_inst_3 = {
-        type: "html-button-response",
-        stimulus: '<p>If you are asked to complete a <b>1-back</b>, you must press SPACEBAR every time the current image matches the image presented <b>one</b> position previously.<br>' +
-				  "Otherwise, you do not have to respond.</p><p>For example, imagine you saw the following image sequence:</p><p style='color:darkblue'>B...D...<b style='color:red'>D</b>...F...<b style='color:red'>F</b>...<b style='color:red'>F</b>...C...E...</p>" +
-				  "<p>You would respond to the image printed in <b style='color:red'>red</b>, as these were repeated <b>one</b> position previously.</p>"+
-				  nonLetterClarify,
-		choices: ['Continue'],
-		post_trial_gap: 250
-    };	
+	type: "html-button-response",
+	stimulus: '<p>If you are asked to complete a <b>1-back</b>, you must press SPACEBAR every time the current image matches the image presented <b>one</b> position previously.<br>' +
+			  "Otherwise, you do not have to respond.</p><p>For example, imagine you saw the following image sequence:</p><p style='color:darkblue'>B...D...<b style='color:red'>D</b>...F...<b style='color:red'>F</b>...<b style='color:red'>F</b>...C...E...</p>" +
+			  "<p>You would respond to the image printed in <b style='color:red'>red</b>, as these were repeated <b>one</b> position previously.</p>",
+	choices: ['Continue'],
+	post_trial_gap: 250
+};	
 
 var anb_inst_4 = {
-        type: "html-button-response",
-        stimulus: '<p>If you are asked to complete a <b>2-back</b>, you must press SPACEBAR every time the current image matches the image presented <b>two</b> positions previously.<br>' +
-				  "Otherwise, you do not have to respond.</p><p>For example, imagine you heard the following image sequence:</p><p style='color:darkblue'>B...D...<b style='color:red'>B</b>...C...<b style='color:red'>B</b>...<b style='color:red'>C</b>...E...F...</p>" +
-				  "<p>You would respond to the images printed in <b style='color:red'>red</b>, as these were repeated <b>two</b> positions previously.</p>"+
-				   nonLetterClarify,
-		choices: ['Continue'],
-		post_trial_gap: 250
-    };		
- 
+	type: "html-button-response",
+	stimulus: '<p>If you are asked to complete a <b>2-back</b>, you must press SPACEBAR every time the current image matches the image presented <b>two</b> positions previously.<br>' +
+			  "Otherwise, you do not have to respond.</p><p>For example, imagine you heard the following image sequence:</p><p style='color:darkblue'>B...D...<b style='color:red'>B</b>...C...<b style='color:red'>B</b>...<b style='color:red'>C</b>...E...F...</p>" +
+			  "<p>You would respond to the images printed in <b style='color:red'>red</b>, as these were repeated <b>two</b> positions previously.</p>",
+	choices: ['Continue'],
+	post_trial_gap: 250
+};		
+
 var anb_inst_5 = {
-        type: "html-button-response",
-        stimulus: '<p>If you are asked to complete a <b>3-back</b>, you must press SPACEBAR every time the current image matches the image presented <b>three</b> positions previously.<br>' +
-				  "Otherwise, you do not have to respond.</p><p>For example, imagine you heard the following image sequence:</p><p style='color:darkblue'>B...D...G...<b style='color:red'>B</b>...<b style='color:red'>D</b>...C...E...<b style='color:red'>D</b>...</p>" +
-				  "<p>You would respond to the images printed in <b style='color:red'>red</b>, as these were repeated <b>three</b> positions previously.</p>" +
-				  nonLetterClarify,
-		choices: ['Continue'],
-		post_trial_gap: 250
-    };
+	type: "html-button-response",
+	stimulus: '<p>If you are asked to complete a <b>3-back</b>, you must press SPACEBAR every time the current image matches the image presented <b>three</b> positions previously.<br>' +
+			  "Otherwise, you do not have to respond.</p><p>For example, imagine you heard the following image sequence:</p><p style='color:darkblue'>B...D...G...<b style='color:red'>B</b>...<b style='color:red'>D</b>...C...E...<b style='color:red'>D</b>...</p>" +
+			  "<p>You would respond to the images printed in <b style='color:red'>red</b>, as these were repeated <b>three</b> positions previously.</p>",
+	choices: ['Continue'],
+	post_trial_gap: 250
+};
 
 var anb_inst_6 = {
-        type: "html-button-response",
-        stimulus: '<p>As you can imagine, the task becomes harder as the delay (1, 2, or 3) increases.</p>' +
-				  '<p>Please make sure you are in a quiet listening environment and free from distraction.<br>You will receive breaks approximately every 90 seconds to minimize fatigue.</p>',
-		choices: ['Continue'],
-		post_trial_gap: 250
-    };
+	type: "html-button-response",
+	stimulus: '<p>As you can imagine, the task becomes harder as the delay (1, 2, or 3) increases.</p>' +
+			  '<p>Please make sure you are in a quiet listening environment and free from distraction.<br>You will receive breaks approximately every 90 seconds to minimize fatigue.</p>',
+	choices: ['Continue'],
+	post_trial_gap: 250
+};
 
-		 
+	 
 var anb_inst_7 = {
-        type: "html-button-response",
-        stimulus: '<p>This concludes the introduction to the memory task.</p>'+
-				  '<p>Please advance to the next screen to receive further instructions.</p>',
-		choices: ['Begin'],
-		post_trial_gap: 250
-    };
+	type: "html-button-response",
+	stimulus: '<p>This concludes the introduction to the memory task.</p>'+
+			  '<p>Please advance to the next screen to receive further instructions.</p>',
+	choices: ['Begin'],
+	post_trial_gap: 250
+};
 
 
 var anb_instruct_final = {	 
-	timeline: [anb_inst_1, anb_inst_2, anb_inst_3, anb_inst_4, anb_inst_5, anb_inst_6, anb_inst_7]		
+timeline: [anb_inst_1, anb_inst_2, anb_inst_3, anb_inst_4, anb_inst_5, anb_inst_6, anb_inst_7]		
 };
 	
 
