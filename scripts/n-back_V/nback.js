@@ -213,7 +213,7 @@ function return_nback_folder(){
 
 		  var interim_noise = {
 			type: 'image-keyboard-response',
-			stimulus: 'spatial/noise.jpg',
+			stimulus: 'spatial/noise.png',
 			trial_duration: 1000,
 			choices: jsPsych.NO_KEYS
 		  };
