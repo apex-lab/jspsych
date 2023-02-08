@@ -1,4 +1,6 @@
-# Auditory N-Back
+# Spatial N-Back
+This script is based almost entirely on code originally written 
+by Stephen Van Hedger.  
 
 ## Task Description
 The n -back task is a continuous performance task that is commonly used
@@ -13,9 +15,8 @@ the current stimulus matches the one presented 'n' stimuli previously.
 The script is easily customizable. It is simple to change the presentation
 rate of the stimuli, the level of n, the relative number of targets and 
 non-targets, and the actual sounds themselves. At present, you can 
-select from spoken letters, cat vocalizations, novel musical chords 
-(using the Bohlen-Pierce scale), and musical tones. Just change the
-'soundType' variable.
+select from letters and spatial locations. Just change the
+'imageType' variable.  
 
 ## Using the Script
 The script outputs two important variables. The first is 
@@ -30,4 +31,4 @@ name in the main html file
 -- e.g., var foldername = return_nback_folder();
 
 
-##### Stephen Van Hedger, April 2020
+##### Stephen Van Hedger, Shannon Heald 2023
