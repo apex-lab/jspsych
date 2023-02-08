@@ -153,11 +153,10 @@ function return_nback_folder(){
         trial_duration: presentationRate,
 		stimulus_height: 500,
         choices: [' '],  
-		post_trial_gap: 100,
         response_ends_trial: false,
         on_finish: function (trialData) {
-            var rt = JSON.parse(trialData.rt);
-			var keyresp = JSON.parse(trialData.key_press);
+            var rt = trialData.rt;
+			var keyresp = trialData.key_press;
 			var wasatarget = (run_sequence.type[TRIAL_INDEX] == "T") ? 1 : 0;
 			var ttype = run_sequence.type[TRIAL_INDEX];
 			var n_level = n;
@@ -212,10 +211,17 @@ function return_nback_folder(){
             }
           };		
 
+		  var interim_noise = {
+			type: 'image-keyboard-response',
+			stimulus: 'spatial/noise.jpg',
+			trial_duration: 1000,
+			choices: jsPsych.NO_KEYS
+		  };
+
 
 //looping function to repeat the trial for the length of the stim array (30 + n)
 	var trial_loop_node = {
-		timeline: [nb_trial],
+		timeline: [nb_trial, interim_noise],
 		loop_function: function(data){
 			if(typeof run_sequence.type[TRIAL_INDEX] !== "undefined"){
 				return true;
