@@ -85,7 +85,7 @@ function return_nback_folder(){
 
 	  var instrBack = {
 			type: "html-button-response",
-			stimulus: function(){n = NB_SEQUENCE[NB_INDEX]; return'<p>You will now complete a <strong>'+n+'-back.</strong></p><p>Remember, this means that you should press SPACEBAR every time the sound you hear matches the one presented <strong>'+n+'</strong> position(s) previously.</p>';},
+			stimulus: function(){n = NB_SEQUENCE[NB_INDEX]; return'<p>You will now complete a <strong>'+n+'-back.</strong></p><p>Remember, this means that you should press SPACEBAR every time the square you see matches the one presented <strong>'+n+'</strong> position(s) previously.</p>';},
 		    choices: ['Continue'],
 			on_start: function(){
 				n = NB_SEQUENCE[NB_INDEX]; //this selects the level (n) from the array defined at the beginning
@@ -264,42 +264,42 @@ function return_nback_folder(){
 
 var anb_inst_1 = {
 	type: "html-button-response",
-	stimulus: '<p>You will now complete an visual memory task. This will take approximately 15 minutes.</p><p>To learn more about the task, please advance to the next screen.',
+	stimulus: '<p>You will now complete an spatial memory task. This will take approximately 15 minutes.</p><p>To learn more about the task, please advance to the next screen.',
 	choices: ['Continue'],
 	post_trial_gap: 250
 };
 
 var anb_inst_2 = {
 	type: "html-button-response",
-	stimulus: '<p>In this task, you will see a sequence of images. The images will be presented one at a time, and a new image will shown every '+Math.round(presentationRate)/1000+' seconds.' +
-			  '<p>Your job is to closely watch these images for specific kinds of <b>repeats</b>.</p>',
+	stimulus: '<p>In this task, you will see a sequence of squares. The squares will be presented one at a time, and a new square will shown every '+Math.round(presentationRate)/1000+' seconds.' +
+			  '<p>Your job is to closely watch these squares for specific kinds of <b>repeats</b>.</p>',
 	choices: ['Continue'],
 	post_trial_gap: 250
 };
 
 var anb_inst_3 = {
 	type: "html-button-response",
-	stimulus: '<p>If you are asked to complete a <b>1-back</b>, you must press SPACEBAR every time the current image matches the image presented <b>one</b> position previously.<br>' +
-			  "Otherwise, you do not have to respond.</p><p>For example, imagine you saw the following image sequence:</p><p style='color:darkblue'>B...D...<b style='color:red'>D</b>...F...<b style='color:red'>F</b>...<b style='color:red'>F</b>...C...E...</p>" +
-			  "<p>You would respond to the image printed in <b style='color:red'>red</b>, as these were repeated <b>one</b> position previously.</p>",
+	stimulus: '<p>If you are asked to complete a <b>1-back</b>, you must press SPACEBAR every time the square matches the square presented <b>one</b> position previously.<br>' +
+			  "Otherwise, you do not have to respond.</p><p>For example, imagine you saw the following square sequence:</p><p style='color:darkblue'>B...D...<b style='color:red'>D</b>...F...<b style='color:red'>F</b>...<b style='color:red'>F</b>...C...E...</p>" +
+			  "<p>You would respond to the square printed in <b style='color:red'>red</b>, as these were repeated <b>one</b> position previously.</p>",
 	choices: ['Continue'],
 	post_trial_gap: 250
 };	
 
 var anb_inst_4 = {
 	type: "html-button-response",
-	stimulus: '<p>If you are asked to complete a <b>2-back</b>, you must press SPACEBAR every time the current image matches the image presented <b>two</b> positions previously.<br>' +
-			  "Otherwise, you do not have to respond.</p><p>For example, imagine you heard the following image sequence:</p><p style='color:darkblue'>B...D...<b style='color:red'>B</b>...C...<b style='color:red'>B</b>...<b style='color:red'>C</b>...E...F...</p>" +
-			  "<p>You would respond to the images printed in <b style='color:red'>red</b>, as these were repeated <b>two</b> positions previously.</p>",
+	stimulus: '<p>If you are asked to complete a <b>2-back</b>, you must press SPACEBAR every time the current square matches the square presented <b>two</b> positions previously.<br>' +
+			  "Otherwise, you do not have to respond.</p><p>For example, imagine you saw the following square sequence:</p><p style='color:darkblue'>B...D...<b style='color:red'>B</b>...C...<b style='color:red'>B</b>...<b style='color:red'>C</b>...E...F...</p>" +
+			  "<p>You would respond to the square printed in <b style='color:red'>red</b>, as these were repeated <b>two</b> positions previously.</p>",
 	choices: ['Continue'],
 	post_trial_gap: 250
 };		
 
 var anb_inst_5 = {
 	type: "html-button-response",
-	stimulus: '<p>If you are asked to complete a <b>3-back</b>, you must press SPACEBAR every time the current image matches the image presented <b>three</b> positions previously.<br>' +
-			  "Otherwise, you do not have to respond.</p><p>For example, imagine you heard the following image sequence:</p><p style='color:darkblue'>B...D...G...<b style='color:red'>B</b>...<b style='color:red'>D</b>...C...E...<b style='color:red'>D</b>...</p>" +
-			  "<p>You would respond to the images printed in <b style='color:red'>red</b>, as these were repeated <b>three</b> positions previously.</p>",
+	stimulus: '<p>If you are asked to complete a <b>3-back</b>, you must press SPACEBAR every time the current square matches the square presented <b>three</b> positions previously.<br>' +
+			  "Otherwise, you do not have to respond.</p><p>For example, imagine you saw the following square sequence:</p><p style='color:darkblue'>B...D...G...<b style='color:red'>B</b>...<b style='color:red'>D</b>...C...E...<b style='color:red'>D</b>...</p>" +
+			  "<p>You would respond to the square printed in <b style='color:red'>red</b>, as these were repeated <b>three</b> positions previously.</p>",
 	choices: ['Continue'],
 	post_trial_gap: 250
 };
@@ -330,7 +330,7 @@ timeline: [anb_inst_1, anb_inst_2, anb_inst_3, anb_inst_4, anb_inst_5, anb_inst_
 //N-Back Wrap-Up  
     var anb_wrapup = {
         type: "html-button-response",
-        stimulus: '<p>Thank you for your responses.</p><p>This concludes the auditory memory task.</p>',
+        stimulus: '<p>Thank you for your responses.</p><p>This concludes the spatial memory task.</p>',
 		choices: ['Continue'],
 		on_finish: function(data){	
 			//change depending on the levels of n-back you are testing
