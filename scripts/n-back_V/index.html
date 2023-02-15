@@ -41,7 +41,7 @@ var save_data = {
 	stimulus: '<p>This concludes the task. Would you like to save the data?</p>',
 	choices: ['No','Yes'],
 	on_finish: function(data){
-		localSave = jsPsych.data.get().last(1).values()[0].button_pressed;			
+		localSave = data.response;			
 	}		
 };
 
