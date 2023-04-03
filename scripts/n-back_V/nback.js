@@ -156,7 +156,7 @@ function return_nback_folder(){
         response_ends_trial: false,
         on_finish: function (trialData) {
             var rt = trialData.rt;
-			var keyresp = trialData.key_press;
+			var keyresp = trialData.response;
 			var wasatarget = (run_sequence.type[TRIAL_INDEX] == "T") ? 1 : 0;
 			var ttype = run_sequence.type[TRIAL_INDEX];
 			var n_level = n;
@@ -167,7 +167,7 @@ function return_nback_folder(){
 
 			//calculate hits and false alarms for each trial
 			if (wasatarget === 1) {
-				if (keyresp == 32) {
+				if (keyresp == " ") {
 					HIT = 1;
 				if (n_level == 1) {
 					HIT_1 += 1;
@@ -180,7 +180,7 @@ function return_nback_folder(){
 					HIT = 0;
 			}
 			  } else if (wasatarget === 0){
-				if (keyresp == 32) {
+				if (keyresp == " ") {
 				FA = 1;
 				if (n_level == 1) {
 					FA_1 += 1;
